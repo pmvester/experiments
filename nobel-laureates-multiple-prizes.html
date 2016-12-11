@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nobel Laureates</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: "http://api.nobelprize.org/v1/laureate.json"
+      }).then(function(data) {
+       for (var i = 0; i < data.laureates.length; i++) {
+         var n = data.laureates[i];
+         if (n.prizes.length > 1) {
+           var s = "";
+           for (var j = 0; j < n.prizes.length; j++) {
+             if (j > 0) {
+               s += ", ";
+             }
+             s += n.prizes[j].year + " " + n.prizes[j].category;
+           }
+           $("#list").append("<li>" + (n.surname === undefined ? "" : n.surname + ", ") + n.firstname + ": " + s + "</li>");
+         }
+       }
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div id="tjosan">
+      <ul id="list">
+      </ul>
+    </div>
+  </body>
+</html>
